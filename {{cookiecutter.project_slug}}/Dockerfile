@@ -1,4 +1,6 @@
 FROM centos:centos8
+FROM python:3.10
+
 #ADD gcp-key.json /gcp-key.json
 
 RUN cd /etc/yum.repos.d/
