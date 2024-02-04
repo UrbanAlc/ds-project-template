@@ -6,14 +6,11 @@ RUN cd /etc/yum.repos.d/ \
 
 RUN yum update -y \
     && yum install sudo -y \
-    && yum groupinstall "Development Tools" -y
-
-# Python 3.10'u yükle
-RUN yum install -y https://centos.pkgs.org/8/centos-power-tools-aarch64/python39-3.9.7-1.el8.aarch64.rpm
-RUN yum install -y https://centos.pkgs.org/8/centos-baseos-aarch64/python39-pip-20.3.4-1.el8.noarch.rpm
-
-# Python 3.10 için pip'i güncelle
-RUN python3.10 -m pip install --upgrade pip
+    && yum groupinstall "Development Tools" -y \
+    && yum install python3.10 -y \
+    && alternatives --set python /usr/bin/python3.10 \
+    && alternatives --set python3 /usr/bin/python3.10 \
+    && yum install python3.10-pip -y
 
 COPY src/ /{{cookiecutter.project_slug}}/src
 COPY data/ /{{cookiecutter.project_slug}}/data
