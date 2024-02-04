@@ -23,6 +23,11 @@ RUN wget https://www.python.org/ftp/python/3.10.2/Python-3.10.2.tgz && \
 # Varsayılan Python sürümünü ayarla
 RUN ln -s /usr/local/bin/python3.10 /usr/local/bin/python
 
+# Pip'i kur ve yolu ayarla
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python get-pip.py && \
+    rm get-pip.py
+
 # Base imajda dahil edilmemişse wget'i yükle
 RUN yum install -y wget && yum clean all
 
