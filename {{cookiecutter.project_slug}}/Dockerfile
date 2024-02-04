@@ -8,9 +8,9 @@ RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|
 RUN yum update -y
 RUN yum install sudo -y
 RUN yum groupinstall "Development Tools" -y
-#RUN yum install python39 -y
-#RUN yum install python3-pip -y
-#RUN pip3 install --upgrade pip
+RUN yum install python39 -y
+RUN yum install python3-pip -y
+RUN pip3 install --upgrade pip
 
 COPY src/ /{{cookiecutter.project_slug}}/src
 COPY data/ /{{cookiecutter.project_slug}}/data
@@ -24,7 +24,7 @@ COPY ./ds_app.py /{{cookiecutter.project_slug}}
 
 WORKDIR /{{cookiecutter.project_slug}}
 
-#RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 #RUN pip install poetry
 #RUN poetry config virtualenvs.create false
