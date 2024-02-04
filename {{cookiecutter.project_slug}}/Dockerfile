@@ -1,31 +1,28 @@
+# Resmi CentOS imajını kullan
 FROM centos:centos8
-#ADD gcp-key.json /gcp-key.json
 
-RUN cd /etc/yum.repos.d/
-RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+# Repository konfigürasyonunu vault.centos.org mirro'su kullanacak şekilde güncelle
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 
-RUN yum update -y
-RUN yum install sudo -y
-RUN yum groupinstall "Development Tools" -y
-#RUN yum install python39 -y
-#RUN yum install python3-pip -y
-#RUN pip3 install --upgrade pip
+# Konteynerdeki çalışma dizinini belirle
+WORKDIR /app
 
-COPY src/ /{{cookiecutter.project_slug}}/src
-COPY data/ /{{cookiecutter.project_slug}}/data
-COPY models/ /{{cookiecutter.project_slug}}/models
-COPY ./requirements.txt /{{cookiecutter.project_slug}}
-#COPY ./pyproject.toml /{{cookiecutter.project_slug}}
-#COPY ./poetry.lock /{{cookiecutter.project_slug}}
-COPY ./ds_app.py /{{cookiecutter.project_slug}}
-#RUN mkdir /home/gcp_keys
-#COPY gcp-key.json /home/gcp_keys/gcp-key.json
+# Repoları güncelle ve gerekli bağımlılıkları yükle
+RUN yum update -y && \
+    yum install -y openssl-devel bzip2-devel libffi-devel wget && \
+    yum groupinstall -y "Development Tools"
 
-WORKDIR /{{cookiecutter.project_slug}}
+# Python 3.10.2 indir ve kur
+RUN wget https://www.python.org/ftp/python/3.10.2/Python-3.10.2.tgz && \
+    tar -xzf Python-3.10.2.tgz && \
+    cd Python-3.10.2 && \
+    ./configure --enable-optimizations && \
+    make altinstall
 
-#RUN pip3 install -r requirements.txt
+# Base imajda dahil edilmemişse wget'i yükle
+RUN yum install -y wget && yum clean all
 
-#RUN pip install poetry
-#RUN poetry config virtualenvs.create false
-#RUN poetry install --no-dev
+# Konteyner başladığında çalışacak komutu belirt
+RUN python --version && \
+    pip3 --version
