@@ -24,7 +24,7 @@ COPY ./ds_app.py /{{cookiecutter.project_slug}}
 
 WORKDIR /{{cookiecutter.project_slug}}
 
-RUN pip3 install -r requirements.txt
+#RUN pip3 install -r requirements.txt
 
 #RUN pip install poetry
 #RUN poetry config virtualenvs.create false
