@@ -28,6 +28,13 @@ RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python get-pip.py && \
     rm get-pip.py
 
+# Jupyter Notebook'u kur
+RUN pip install notebook
+
+# ipykernel'i kur ve güncelle
+RUN pip install ipykernel && \
+    python -m ipykernel install --user
+
 # Base imajda dahil edilmemişse wget'i yükle
 RUN yum install -y wget && yum clean all
 
