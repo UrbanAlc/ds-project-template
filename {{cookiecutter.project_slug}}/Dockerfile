@@ -7,10 +7,21 @@ RUN cd /etc/yum.repos.d/ \
 RUN yum update -y \
     && yum install sudo -y \
     && yum groupinstall "Development Tools" -y \
-    && yum install python3.10 -y \
-    && alternatives --set python /usr/bin/python3.10 \
-    && alternatives --set python3 /usr/bin/python3.10 \
-    && yum install python3.10-pip -y
+    && yum install wget -y
+
+# Python 3.10'u derle ve yükle
+RUN cd /tmp \
+    && wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
+    && tar -xf Python-3.10.0.tgz \
+    && cd Python-3.10.0 \
+    && ./configure \
+    && make \
+    && make install
+
+# Python 3.10 için pip'i yükle
+RUN wget https://bootstrap.pypa.io/get-pip.py \
+    && python3.10 get-pip.py \
+    && rm -f get-pip.py
 
 COPY src/ /{{cookiecutter.project_slug}}/src
 COPY data/ /{{cookiecutter.project_slug}}/data
@@ -20,4 +31,5 @@ COPY ./ds_app.py /{{cookiecutter.project_slug}}
 
 WORKDIR /{{cookiecutter.project_slug}}
 
+# Python bağımlılıklarını yükle
 RUN pip3.10 install -r requirements.txt
