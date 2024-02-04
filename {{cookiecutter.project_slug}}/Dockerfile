@@ -1,5 +1,5 @@
 # Resmi CentOS imajını kullan
-FROM centos:centos8
+FROM centos:latest
 
 # Repository konfigürasyonunu vault.centos.org mirro'su kullanacak şekilde güncelle
 RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
@@ -19,6 +19,9 @@ RUN wget https://www.python.org/ftp/python/3.10.2/Python-3.10.2.tgz && \
     cd Python-3.10.2 && \
     ./configure --enable-optimizations && \
     make altinstall
+
+# Varsayılan Python sürümünü ayarla
+RUN ln -s /usr/local/bin/python3.10 /usr/local/bin/python
 
 # Base imajda dahil edilmemişse wget'i yükle
 RUN yum install -y wget && yum clean all
