@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Repoları güncelle ve gerekli bağımlılıkları yükle
 RUN yum update -y && \
-    yum install -y openssl-devel bzip2-devel libffi-devel wget && \
+    yum install -y openssl-devel bzip2-devel libffi-devel wget libsqlite3x-devel && \
     yum groupinstall -y "Development Tools"
 
 # Python 3.10.2 indir ve kur
